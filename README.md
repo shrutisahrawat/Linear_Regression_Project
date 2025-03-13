@@ -1,2 +1,2 @@
 # Linear_Regression_Project
-House_Prediction_Project
+Salary_Prediction_Project
