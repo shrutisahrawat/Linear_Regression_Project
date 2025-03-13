@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Experience Input Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #bdbf30;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .form-container {
+            background-color: #2baf83;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(14, 1, 1, 0.1);
+            padding: 30px;
+            text-align: center;
+            width: 300px;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        input[type="number"] {
+            padding: 10px;
+            margin: 10px 0;
+            width: 80%;
+            border: 1px solid #cf1313;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        button {
+            padding: 10px 15px;
+            background-color: #4f4caf;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #4548a0;
+        }
+
+        .output {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="form-container">
+        <h2>Enter Your Experience</h2>
+        <form id="experienceForm">
+            <input type="number" name="Experience" id="ExperienceInput" placeholder="Enter your Experience (in years)" required>
+            <br>
+            <button type="submit">Submit</button>
+        </form>
+        <div id="result" class="output"></div>  <!-- Display result here -->
+    </div>
+
+    <script>
+        document.getElementById("experienceForm").addEventListener("submit", function(e) {
+            e.preventDefault();  // Prevent default form submission
+
+            // Get user input
+            const experience = document.getElementById("ExperienceInput").value;
+
+            // Send data to Flask backend
+            fetch('/predict', {  // Ensure this matches the Flask route
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `Experience=${experience}`,
+            })
+            .then(response => response.json())  // Parse JSON response
+            .then(data => {
+                document.getElementById("result").textContent = data.result;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById("result").textContent = "Error processing request.";
+            });
+        });
+    </script>
+
+</body>
+</html>
